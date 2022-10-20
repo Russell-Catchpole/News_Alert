@@ -9,8 +9,11 @@ public class Rss {
 	public static void main(String[] args) throws IOException, FeedException {
 		RssReader rssReader = new RssReader();
 		String html = rssReader.buildAlerts();
-
-		Mailer mailer = new Mailer();
-		mailer.sendEmail(html);
+		if (html.length() > 0) {
+			Mailer mailer = new Mailer();
+			mailer.sendEmail(html);
+		} else {
+			System.out.println("No hits found");
+		}
 	}
 }

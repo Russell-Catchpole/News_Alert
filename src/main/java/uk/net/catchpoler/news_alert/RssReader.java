@@ -14,21 +14,30 @@ public class RssReader {
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(feedSource));
         System.out.println(feed);
-        String html = "<p>";
+        String html = "";
+        String searchTerms[] = {"hong", "kong"};
+        int hitCount = 0;
 
-        for (final Iterator iter = feed.getEntries().iterator();
-             iter.hasNext(); ) {
+        for (final Iterator iter = feed.getEntries().iterator(); iter.hasNext(); ) {
             final SyndEntry entry = (SyndEntry) iter.next();
             String title = entry.getTitle();
-            if (title.toLowerCase().contains("carbon")
-                    && title.toLowerCase().contains("car")) {
+            boolean hit = true;
+            for (int i = 0; i < searchTerms.length && hit; i++) {
+                if (!title.toLowerCase().contains(searchTerms[i])) {
+                    hit = false;
+                }
+            }
+            if (hit) {
                 String uri = entry.getUri();
-                html += ("<a href=" + uri + ">" + title + "</a>\n");
+                html += ("<p><a href=" + uri + ">" + title + "</a></p>\n");
+                hitCount++;
             }
         }
-        html += "</p>";
-        System.out.println(html);
-
-        return html;
+            if (hitCount > 0) {
+                System.out.println(html);
+                return html;
+            }
+        return "";
     }
+
 }
