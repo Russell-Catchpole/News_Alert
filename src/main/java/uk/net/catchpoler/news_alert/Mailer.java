@@ -9,7 +9,7 @@ public class Mailer {
         String to = "rcatchpo@yahoo.co.uk";
         String from = "russelljcatchpole@googlemail.com";
         final String username = "russelljcatchpole@googlemail.com";
-        final String password = "fnwpttgrtxggsdet";
+        final String password = "";
         String host = "smtp.gmail.com";
 
         // Get system properties
