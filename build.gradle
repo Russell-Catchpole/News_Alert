@@ -19,6 +19,7 @@ dependencies {
 	implementation group: 'javax.activation', name: 'activation', version: '1.1.1'
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 	implementation 'javax.mail:javax.mail-api:1.6.2'
+	implementation 'io.github.cdimascio:dotenv-java:2.2.4'
 }
 
 

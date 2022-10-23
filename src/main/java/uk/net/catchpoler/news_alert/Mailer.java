@@ -1,15 +1,18 @@
 package uk.net.catchpoler.news_alert;
+import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 public class Mailer {
     public void sendEmail(String html) {
 // Now create and send an email
+        Dotenv dotenv = Dotenv.load();
         String to = "rcatchpo@yahoo.co.uk";
         String from = "russelljcatchpole@googlemail.com";
         final String username = "russelljcatchpole@googlemail.com";
-        final String password = "dmxinpillsgjcaux";
+        final String password = dotenv.get("WHERESMYVIAGRA");
         String host = "smtp.gmail.com";
 
         // Get system properties

@@ -3,8 +3,6 @@ package uk.net.catchpoler.news_alert;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
-
-import com.rometools.rome.feed.synd.SyndFeedImpl;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
@@ -39,6 +37,8 @@ public class RssReader {
             }
             if (hitCount == 0) {
                 html += "   - No hits!<br>";
+            } else {
+                System.out.println("New links added: " );
             }
             return html;
         } catch (Exception e) {
