@@ -1,18 +1,20 @@
 package uk.net.catchpoler.news_alert;
 import io.github.cdimascio.dotenv.Dotenv;
+import java.sql.SQLException;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class Mailer {
-    public void sendEmail(String html) {
+    public void sendEmail(String to, String messageBody) throws SQLException, ClassNotFoundException {
+
 // Now create and send an email
         Dotenv dotenv = Dotenv.load();
-        String to = "rcatchpo@yahoo.co.uk";
-        String from = "russelljcatchpole@googlemail.com";
-        final String username = "russelljcatchpole@googlemail.com";
-        final String password = dotenv.get("WHERESMYVIAGRA");
+
+        final String username = dotenv.get("WHERESMYVIAGRA");;
+        final String password = dotenv.get("HERESMYVIAGRA");
+        String from = username;
         String host = "smtp.gmail.com";
 
         // Get system properties
@@ -46,7 +48,7 @@ public class Mailer {
             // Set Subject: header field
             message.setSubject("News Alert!");
 
-            message.setContent(html, "text/html");
+            message.setContent(messageBody, "text/html");
 
             // Now set the actual message
 //			message.setText(html);

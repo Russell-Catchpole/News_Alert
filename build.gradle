@@ -4,20 +4,17 @@ plugins {
 	id 'java-library'
 	id 'application'
 }
-
-//group = 'com.example'
-//version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	implementation group: 'com.rometools', name: 'rome', version: '1.18.0'
 	implementation group: 'javax.activation', name: 'activation', version: '1.1.1'
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.31'
 	implementation 'javax.mail:javax.mail-api:1.6.2'
 	implementation 'io.github.cdimascio:dotenv-java:2.2.4'
 }
