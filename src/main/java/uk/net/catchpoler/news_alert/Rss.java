@@ -47,7 +47,7 @@ public class Rss {
             }
             dp.close();
             System.out.println("Cycle finished. Sleeping zzzzzzz");
-            Thread.sleep(10000);
+            Thread.sleep(18000);
         }
     }
 }
