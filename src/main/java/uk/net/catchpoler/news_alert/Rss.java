@@ -19,8 +19,8 @@ public class Rss {
                 "https://www.yahoo.com/news/rss"
         };
         String anAt = "@";
-        String dom = "yahoo";
-        String user = "rcatchpo" + anAt + dom + ".co.uk"; // deflect spam from github!
+        String dom = "gmail";
+        String user = "russelljcatchpole" + anAt + dom + ".com"; // deflect spam from github!
 
         // Connect to news-alert database
         DataProcessor dp = new DataProcessor();
@@ -47,7 +47,7 @@ public class Rss {
             }
             dp.close();
             System.out.println("Cycle finished. Sleeping zzzzzzz");
-            Thread.sleep(18000);
+            Thread.sleep(18000000);
         }
     }
 }
