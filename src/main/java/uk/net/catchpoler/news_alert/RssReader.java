@@ -19,10 +19,12 @@ public class RssReader {
             int hitCount = 0;
 
             // Read through all the entries in the feed
+            System.out.println("Checking " + feedSource);
             for (final Iterator iter = feed.getEntries().iterator(); iter.hasNext(); ) {
                 final SyndEntry entry = (SyndEntry) iter.next();
                 String title = entry.getTitle();
                 boolean hit = true;
+                System.out.println("Title: " + title);
                 for (int i = 0; i < searchTerms.length && hit; i++) {
                     if (searchTerms[i].length() > 0) {
                         if (!title.toLowerCase().contains(searchTerms[i])) {
@@ -53,6 +55,7 @@ public class RssReader {
             }
             return html;
         } catch (Exception e) {
+            System.out.println("RssReader failed:" + e.getMessage());
 //            e.printStackTrace();
             return "";
         }

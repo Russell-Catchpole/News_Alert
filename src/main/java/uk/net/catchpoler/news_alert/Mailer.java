@@ -50,9 +50,6 @@ public class Mailer {
 
             message.setContent(messageBody, "text/html");
 
-            // Now set the actual message
-//			message.setText(html);
-
             // Send message
             Transport.send(message);
             System.out.println("Sent message successfully....");
