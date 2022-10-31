@@ -19,7 +19,9 @@ public class Rss {
 //                "view-source:https://www.reutersagency.com/feed/", odd format
                 "https://feeds.feedburner.com/breakingtravelnews",
                 "https://www.feedspot.com/infiniterss.php?_src=followbtn&followfeedid=5245042&q=site:",
-                "https://www.news.gov.hk/en/common/html/topstories.rss.xml"
+                "https://www.news.gov.hk/en/common/html/topstories.rss.xml",
+                "http://feeds.bbci.co.uk/news/world/rss.xml",
+                "https://www.travelnewsasia.com/travelnews.xml",
         };
         String anAt = "@";
         String dom = "gmail";
@@ -34,7 +36,7 @@ public class Rss {
             }
 
             RssReader rssReader = new RssReader();
-            String searchTerms[] = {"hong kong", "flights"};
+            String searchTerms[] = {"hong kong", "flight"};
             String html = "";
 
             for (int x = 0; x < feeds.length; x++) {
