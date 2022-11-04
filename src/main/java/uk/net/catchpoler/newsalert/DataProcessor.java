@@ -1,4 +1,4 @@
-package uk.net.catchpoler.news_alert;
+package uk.net.catchpoler.newsalert;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
