@@ -24,9 +24,6 @@ public class Rss {
                 "http://feeds.bbci.co.uk/news/world/rss.xml",
                 "https://www.travelnewsasia.com/travelnews.xml",
         };
-        String anAt = "@";
-        String dom = "gmail";
-        String user = "russelljcatchpole" + anAt + dom + ".com"; // deflect spam from github!
 
         // Connect to news-alert database
         DataProcessor dp = new DataProcessor();
@@ -49,13 +46,13 @@ public class Rss {
 
 
                     for (int x = 0; x < feeds.length; x++) {
-                        html += rssReader.buildAlerts(feeds[x], searchTerms, dp, user);
+                        html += rssReader.buildAlerts(feeds[x], searchTerms, dp, userEmail);
                     }
                     if (html.length() > 0) {
                         Mailer mailer = new Mailer();
                         String messageBody = "<heading 1>Search terms:" + Arrays.toString(searchTerms) + "<heading 1><br><br>"
                                 + html;
-                        mailer.sendEmail(user, messageBody);
+                        mailer.sendEmail(userEmail, messageBody);
                     } else {
                         System.out.println("No new hits found");
                     }
