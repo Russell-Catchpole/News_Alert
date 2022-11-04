@@ -4,6 +4,17 @@ plugins {
 	id 'java-library'
 	id 'application'
 }
+
+jar {
+	manifest {
+		attributes('Main-Class': 'uk.net.catchpoler.newsalert.Rss')
+	}
+		from {
+			configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+		}
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	}
+
 sourceCompatibility = '11'
 
 repositories {
@@ -11,14 +22,22 @@ repositories {
 }
 
 dependencies {
-	implementation group: 'com.rometools', name: 'rome', version: '1.18.0'
-	implementation group: 'javax.activation', name: 'activation', version: '1.1.1'
-	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.31'
-	implementation 'javax.mail:javax.mail-api:1.6.2'
+
+implementation 'com.rometools:rome:1.18.0'
+	implementation 'javax.activation:activation:1.1.1'
+	implementation 'com.sun.mail:javax.mail:1.6.2'
+	implementation 'mysql:mysql-connector-java:8.0.30'
 	implementation 'io.github.cdimascio:dotenv-java:2.2.4'
 }
 
+task copyFileFromRootProject(type: Copy) {
+	from ".env"
+	into 'build/libs'
+}
+
+sourceSets {
+	api
+}
 
 
 

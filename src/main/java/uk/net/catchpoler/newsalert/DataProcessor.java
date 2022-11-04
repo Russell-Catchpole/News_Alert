@@ -1,4 +1,4 @@
-package uk.net.catchpoler.news_alert;
+package uk.net.catchpoler.newsalert;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -7,8 +7,8 @@ import java.sql.*;
 public class DataProcessor {
     private Connection con = null;
     private Statement st = null;
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
+    private PreparedStatement psAlert = null;
+    private ResultSet rsAlert = null;
 
     public boolean connect() throws SQLException {
         try {
@@ -31,19 +31,31 @@ public class DataProcessor {
     }
 
     public boolean isAlertFound(String user_id, String uri) throws SQLException {
-        ps = con.prepareStatement("select 1 from alert where user_id = ? and uri = ?");
-        ps.setString(1, user_id);
-        ps.setString(2, uri);
-        rs = ps.executeQuery();
-       return rs.next();
+        psAlert = con.prepareStatement("select 1 from alert where user_id = ? and uri = ?");
+        psAlert.setString(1, user_id);
+        psAlert.setString(2, uri);
+        rsAlert = psAlert.executeQuery();
+        return rsAlert.next();
+    }
+
+    public ResultSet RtvUsers() throws SQLException {
+        ResultSet rsUser = null;
+        try {
+            PreparedStatement psUser = con.prepareStatement("select * from user");
+            rsUser = psUser.executeQuery();
+            return rsUser;
+        } catch (SQLException s) {
+            System.out.println(s.getMessage());
+            return null;
+        }
     }
 
     public boolean writeAlert(String user_id, String uri) throws SQLException {
         try {
-            ps = con.prepareStatement("INSERT INTO alert (user_id, uri) VALUES (?, ?);");
-            ps.setString(1, user_id);
-            ps.setString(2, uri);
-            if (!ps.execute()) {
+            psAlert = con.prepareStatement("INSERT INTO alert (user_id, uri) VALUES (?, ?);");
+            psAlert.setString(1, user_id);
+            psAlert.setString(2, uri);
+            if (!psAlert.execute()) {
                 System.out.println("Record added: " + user_id + ", " + uri);
                 return true;
             } else {
@@ -59,8 +71,8 @@ public class DataProcessor {
 
     public void close() {
         try {
-            if (rs != null) {
-                rs.close();
+            if (rsAlert != null) {
+                rsAlert.close();
             }
 
             if (st != null) {

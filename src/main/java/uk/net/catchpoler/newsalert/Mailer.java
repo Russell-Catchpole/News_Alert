@@ -1,4 +1,4 @@
-package uk.net.catchpoler.news_alert;
+package uk.net.catchpoler.newsalert;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -52,7 +52,7 @@ public class Mailer {
 
             // Send message
             Transport.send(message);
-            System.out.println("Sent message successfully....");
+            System.out.println("Sent message successfully to: " + to);
         } catch (MessagingException mex) {
             mex.printStackTrace();
         }
