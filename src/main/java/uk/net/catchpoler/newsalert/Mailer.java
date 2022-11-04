@@ -52,7 +52,7 @@ public class Mailer {
 
             // Send message
             Transport.send(message);
-            System.out.println("Sent message successfully....");
+            System.out.println("Sent message successfully to: " + to);
         } catch (MessagingException mex) {
             mex.printStackTrace();
         }

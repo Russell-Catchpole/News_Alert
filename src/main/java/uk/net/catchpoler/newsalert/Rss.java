@@ -1,6 +1,7 @@
 package uk.net.catchpoler.newsalert;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
@@ -39,16 +40,26 @@ public class Rss {
             String searchTerms[] = {"hong kong", "flight"};
             String html = "";
 
-            for (int x = 0; x < feeds.length; x++) {
-                html += rssReader.buildAlerts(feeds[x], searchTerms, dp, user);
-            }
-            if (html.length() > 0) {
-                Mailer mailer = new Mailer();
-                String messageBody = "<heading 1>Search terms:" + Arrays.toString(searchTerms) + "<heading 1><br><br>"
-                        + html;
-                mailer.sendEmail(user, messageBody);
-            } else {
-                System.out.println("No new hits found");
+            ResultSet rsUser = dp.RtvUsers();
+            if (rsUser != null) {
+                while (rsUser.next()) {
+                    int userId = rsUser.getInt(1);
+                    String userEmail = rsUser.getString(2);
+                    System.out.println(("userId: " + userId + " userEmail:" + userEmail));
+
+
+                    for (int x = 0; x < feeds.length; x++) {
+                        html += rssReader.buildAlerts(feeds[x], searchTerms, dp, user);
+                    }
+                    if (html.length() > 0) {
+                        Mailer mailer = new Mailer();
+                        String messageBody = "<heading 1>Search terms:" + Arrays.toString(searchTerms) + "<heading 1><br><br>"
+                                + html;
+                        mailer.sendEmail(user, messageBody);
+                    } else {
+                        System.out.println("No new hits found");
+                    }
+                }
             }
             dp.close();
             System.out.println("Cycle finished. Sleeping zzzzzzz");
