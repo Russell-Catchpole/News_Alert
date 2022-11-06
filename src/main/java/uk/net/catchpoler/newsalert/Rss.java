@@ -37,11 +37,14 @@ public class Rss {
             String searchTerms[] = {"hong kong", "flight"};
             String html = "";
 
-            ResultSet rsUser = dp.RtvUsers();
-            if (rsUser != null) {
-                while (rsUser.next()) {
-                    int userId = rsUser.getInt(1);
-                    String userEmail = rsUser.getString(2);
+            // Need to refactor to read through feeds only once & not for every user!
+
+            ResultSet rsFeeds = dp.rtvFeeds();
+            ResultSet rsUsers = dp.rtvUsers();
+            if (rsUsers != null) {
+                while (rsUsers.next()) {
+                    int userId = rsUsers.getInt(1);
+                    String userEmail = rsUsers.getString(2);
                     System.out.println(("userId: " + userId + " userEmail:" + userEmail));
 
 

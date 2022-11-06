@@ -16,15 +16,17 @@ public class DataProcessor {
             String newsAlertPw = dotenv.get("NEWS_ALERT_PW");
             ;
             con = DriverManager
-                    .getConnection("jdbc:mysql://localhost/news-alert?"
-                            + "user=root&password=" + newsAlertPw);
+//                    .getConnection("jdbc:mysql://localhost/news-alert?"
+//                            + "user=root&password=" + newsAlertPw);
+             .getConnection("jdbc:mysql://newsalert3.cluster-ch8wnqqbnuw1.eu-west-2.rds.amazonaws.com/news-alert?"
+                    + "user=admin&password=" + newsAlertPw);
             if (con == null) {
                 System.out.println("Connection to news-alert database failed!");
                 return false;
             }
             System.out.println("Successfully connected to news-alert database!");
             return true;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -38,12 +40,24 @@ public class DataProcessor {
         return rsAlert.next();
     }
 
-    public ResultSet RtvUsers() throws SQLException {
+    public ResultSet rtvUsers() throws SQLException {
         ResultSet rsUser = null;
         try {
             PreparedStatement psUser = con.prepareStatement("select * from user");
             rsUser = psUser.executeQuery();
             return rsUser;
+        } catch (SQLException s) {
+            System.out.println(s.getMessage());
+            return null;
+        }
+    }
+
+    public ResultSet rtvFeeds() throws SQLException {
+        ResultSet rsFeed = null;
+        try {
+            PreparedStatement psFeed = con.prepareStatement("select uri from feed");
+            rsFeed = psFeed.executeQuery();
+            return rsFeed;
         } catch (SQLException s) {
             System.out.println(s.getMessage());
             return null;
