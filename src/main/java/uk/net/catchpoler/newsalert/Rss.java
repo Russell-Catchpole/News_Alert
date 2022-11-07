@@ -24,9 +24,6 @@ public class Rss {
                 "http://feeds.bbci.co.uk/news/world/rss.xml",
                 "https://www.travelnewsasia.com/travelnews.xml",
         };
-        String anAt = "@";
-        String dom = "gmail";
-        String user = "russelljcatchpole" + anAt + dom + ".com"; // deflect spam from github!
 
         // Connect to news-alert database
         DataProcessor dp = new DataProcessor();
@@ -40,22 +37,25 @@ public class Rss {
             String searchTerms[] = {"hong kong", "flight"};
             String html = "";
 
-            ResultSet rsUser = dp.RtvUsers();
-            if (rsUser != null) {
-                while (rsUser.next()) {
-                    int userId = rsUser.getInt(1);
-                    String userEmail = rsUser.getString(2);
+
+            // Need to refactor to read through feeds only once & not for every user!
+            ResultSet rsFeeds = dp.rtvFeeds();
+            ResultSet rsUsers = dp.rtvUsers();
+            if (rsUsers != null) {
+                while (rsUsers.next()) {
+                    int userId = rsUsers.getInt(1);
+                    String userEmail = rsUsers.getString(2);
                     System.out.println(("userId: " + userId + " userEmail:" + userEmail));
 
 
                     for (int x = 0; x < feeds.length; x++) {
-                        html += rssReader.buildAlerts(feeds[x], searchTerms, dp, user);
+                        html += rssReader.buildAlerts(feeds[x], searchTerms, dp, userEmail);
                     }
                     if (html.length() > 0) {
                         Mailer mailer = new Mailer();
                         String messageBody = "<heading 1>Search terms:" + Arrays.toString(searchTerms) + "<heading 1><br><br>"
                                 + html;
-                        mailer.sendEmail(user, messageBody);
+                        mailer.sendEmail(userEmail, messageBody);
                     } else {
                         System.out.println("No new hits found");
                     }
