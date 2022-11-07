@@ -10,16 +10,13 @@ public class DataProcessor {
     private PreparedStatement psAlert = null;
     private ResultSet rsAlert = null;
 
-    public boolean connect() throws SQLException {
+    public boolean connect() {
         try {
             Dotenv dotenv = Dotenv.load();
             String newsAlertPw = dotenv.get("NEWS_ALERT_PW");
-            ;
             con = DriverManager
-//                    .getConnection("jdbc:mysql://localhost/news-alert?"
-//                            + "user=root&password=" + newsAlertPw);
-             .getConnection("jdbc:mysql://newsalert3.cluster-ch8wnqqbnuw1.eu-west-2.rds.amazonaws.com/news-alert?"
-                    + "user=admin&password=" + newsAlertPw);
+                  .getConnection("jdbc:mysql://localhost/news-alert?"
+                  + "user=root&password=" + newsAlertPw);
             if (con == null) {
                 System.out.println("Connection to news-alert database failed!");
                 return false;
@@ -66,7 +63,7 @@ public class DataProcessor {
 
     public boolean writeAlert(String user_id, String uri) throws SQLException {
         try {
-            psAlert = con.prepareStatement("INSERT INTO alert (user_id, uri) VALUES (?, ?);");
+            psAlert = con.prepareStatement("INSERT INTO alert (user_id, uri) VALUES (?, ?)");
             psAlert.setString(1, user_id);
             psAlert.setString(2, uri);
             if (!psAlert.execute()) {
