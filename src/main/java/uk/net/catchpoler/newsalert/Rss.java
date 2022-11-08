@@ -27,20 +27,27 @@ public class Rss {
 
         // Connect to news-alert database
         DataProcessor dp = new DataProcessor();
+        if (!dp.connect()) {
+            return;
+        }
+        if  (!dp.getDynamoDBClient()) {
+            return;
+        }
+
+        // Only read feeds & user data once to save on database costs.
+        // Will need to restart or perhaps have a reload api when I convert this
+        // to a web service.
+        RssReader rssReader = new RssReader();
+        String searchTerms[] = {"hong kong", "flight"};
+        String html = "";
+
+        // Need to refactor to read through feeds only once & not for every user!
+
+        ResultSet rsFeeds = dp.rtvFeeds();
+        ResultSet rsUsers = dp.rtvUsers();
 
         while (true) {
-            if (!dp.connect()) {
-                return;
-            }
 
-            RssReader rssReader = new RssReader();
-            String searchTerms[] = {"hong kong", "flight"};
-            String html = "";
-
-            // Need to refactor to read through feeds only once & not for every user!
-
-            ResultSet rsFeeds = dp.rtvFeeds();
-            ResultSet rsUsers = dp.rtvUsers();
             if (rsUsers != null) {
                 while (rsUsers.next()) {
                     int userId = rsUsers.getInt(1);
@@ -64,6 +71,7 @@ public class Rss {
             dp.close();
             System.out.println("Cycle finished. Sleeping zzzzzzz");
             Thread.sleep(180000);
+            rsUsers.beforeFirst();
         }
     }
 }

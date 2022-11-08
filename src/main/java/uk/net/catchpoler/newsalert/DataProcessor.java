@@ -1,11 +1,24 @@
 package uk.net.catchpoler.newsalert;
 
+import com.amazonaws.regions.Regions;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.ItemCollection;
+import com.amazonaws.services.dynamodbv2.document.ScanOutcome;
+import com.amazonaws.services.dynamodbv2.document.Table;
 
 public class DataProcessor {
     private Connection con = null;
+    private DynamoDB dynamoDB = null;
     private Statement st = null;
     private PreparedStatement psAlert = null;
     private ResultSet rsAlert = null;
@@ -15,8 +28,8 @@ public class DataProcessor {
             Dotenv dotenv = Dotenv.load();
             String newsAlertPw = dotenv.get("NEWS_ALERT_PW");
             con = DriverManager
-                  .getConnection("jdbc:mysql://localhost/news-alert?"
-                  + "user=root&password=" + newsAlertPw);
+                    .getConnection("jdbc:mysql://localhost/news-alert?"
+                            + "user=root&password=" + newsAlertPw);
             if (con == null) {
                 System.out.println("Connection to news-alert database failed!");
                 return false;
@@ -27,6 +40,18 @@ public class DataProcessor {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean getDynamoDBClient() {
+        try {
+            AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.EU_WEST_2).build();
+            this.dynamoDB = new DynamoDB(client);
+            System.out.println("AmazonDynamoDB Client created!");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean isAlertFound(String user_id, String uri) throws SQLException {
@@ -49,6 +74,17 @@ public class DataProcessor {
         }
     }
 
+    //    public ResultSet rtvFeeds() throws SQLException {
+//        ResultSet rsFeed = null;
+//        try {
+//            PreparedStatement psFeed = con.prepareStatement("select uri from feed");
+//            rsFeed = psFeed.executeQuery();
+//            return rsFeed;
+//        } catch (SQLException s) {
+//            System.out.println(s.getMessage());
+//            return null;
+//        }
+//    }
     public ResultSet rtvFeeds() throws SQLException {
         ResultSet rsFeed = null;
         try {
@@ -98,41 +134,5 @@ public class DataProcessor {
         }
     }
 }
-
-//            writeResultSet(resultSet);
-
-// PreparedStatements can use variables and are more efficient
-//            preparedStatement = connect
-//                    .prepareStatement("insert into  news-alert.alert values (default, ?, ?, ?, ? , ?, ?)");
-// "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
-// Parameters start with 1
-//            ps.setString(1, "Test");
-//            ps.setString(2, "TestEmail");
-//            ps.setString(3, "TestWebpage");
-//            ps.setDate(4, new java.sql.Date(2009, 12, 11));
-//            ps.setString(5, "TestSummary");
-//            ps.setString(6, "TestComment");
-//            ps.executeUpdate();
-//
-//            ps = con
-//                    .prepareStatement("SELECT myuser, webpage, datum, summary, COMMENTS from feedback.comments");
-//            rs = ps.executeQuery();
-//            writeResultSet(resultSet);
-
-// Remove again the insert comment
-//            ps = con
-//                    .prepareStatement("delete from feedback.comments where myuser= ? ; ");
-//            ps.setString(1, "Test");
-//            ps.executeUpdate();
-//
-//            rs = st
-//                    .executeQuery("select * from feedback.comments");
-////            writeMetaData(resultSet);
-
-//        } catch (Exception e) {
-//            throw e;
-//        } finally {
-//            close();
-//        }
 
 
