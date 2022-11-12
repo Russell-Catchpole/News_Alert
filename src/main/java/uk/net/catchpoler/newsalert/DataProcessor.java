@@ -17,12 +17,14 @@ public class DataProcessor {
             con = DriverManager
                   .getConnection("jdbc:mysql://localhost/news-alert?"
                   + "user=root&password=" + newsAlertPw);
+
             if (con == null) {
                 System.out.println("Connection to news-alert database failed!");
                 return false;
             }
             System.out.println("Successfully connected to news-alert database!");
             return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

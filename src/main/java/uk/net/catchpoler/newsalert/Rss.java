@@ -37,8 +37,8 @@ public class Rss {
             String searchTerms[] = {"hong kong", "flight"};
             String html = "";
 
-            // Need to refactor to read through feeds only once & not for every user!
 
+            // Need to refactor to read through feeds only once & not for every user!
             ResultSet rsFeeds = dp.rtvFeeds();
             ResultSet rsUsers = dp.rtvUsers();
             if (rsUsers != null) {
