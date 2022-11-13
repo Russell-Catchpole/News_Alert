@@ -12,11 +12,13 @@ public class DataProcessor {
 
     public boolean connect() {
         try {
-            Dotenv dotenv = Dotenv.load();
+            Dotenv dotenv = Dotenv.configure()
+                    .filename("/.env_azure")
+                    .load();
             String newsAlertPw = dotenv.get("NEWS_ALERT_PW");
             con = DriverManager
-                  .getConnection("jdbc:mysql://localhost/news-alert?"
-                  + "user=root&password=" + newsAlertPw);
+                    .getConnection("jdbc:mysql://mysql-training-db.mysql.database.azure.com:3306/news-alert?"
+                            + "user=naadmin&password=" + newsAlertPw);
 
             if (con == null) {
                 System.out.println("Connection to news-alert database failed!");
