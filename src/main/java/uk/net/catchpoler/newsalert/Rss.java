@@ -27,29 +27,25 @@ public class Rss {
 
         // Connect to news-alert database
         DataProcessor dp = new DataProcessor();
+        if (!dp.connect()) {
+            return;
+        }
+
+        RssReader rssReader = new RssReader();
+        String searchTerms[] = {"hong kong", "flight"};
+        String html = "";
+
+        ResultSet rsFeeds = dp.rtvFeeds();
+        ResultSet rsUsers = dp.rtvUsers();
 
         while (true) {
-            if (!dp.connect()) {
-                return;
-            }
-
-            RssReader rssReader = new RssReader();
-            String searchTerms[] = {"hong kong", "flight"};
-            String html = "";
-
-
-            // Need to refactor to read through feeds only once & not for every user!
-            ResultSet rsFeeds = dp.rtvFeeds();
-            ResultSet rsUsers = dp.rtvUsers();
-            if (rsUsers != null) {
+            if (rsFeeds != null) {
                 while (rsUsers.next()) {
                     int userId = rsUsers.getInt(1);
                     String userEmail = rsUsers.getString(2);
                     System.out.println(("userId: " + userId + " userEmail:" + userEmail));
-
-
-                    for (int x = 0; x < feeds.length; x++) {
-                        html += rssReader.buildAlerts(feeds[x], searchTerms, dp, userEmail);
+                    while (rsFeeds.next()) {
+                        html += rssReader.buildAlerts(rsFeeds.getString(1), searchTerms, dp, userEmail);
                     }
                     if (html.length() > 0) {
                         Mailer mailer = new Mailer();
@@ -61,7 +57,7 @@ public class Rss {
                     }
                 }
             }
-            dp.close();
+//            dp.close();
             System.out.println("Cycle finished. Sleeping zzzzzzz");
             Thread.sleep(180000);
         }
